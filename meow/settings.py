@@ -40,7 +40,8 @@ INSTALLED_APPS = (
     'django_extensions',
     'meow',
     'documents',
-    'providers'
+    'providers',
+    'gunicorn'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -113,3 +114,4 @@ try:
     from local_settings import *
 except ImportError:
     pass
+    
