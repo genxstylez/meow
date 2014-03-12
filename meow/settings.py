@@ -109,9 +109,11 @@ CELERYBEAT_SCHEDULE = {
 
 CELERY_TIMEZONE = 'UTC'
 
+LOGGING = {
+    'version': 1,
+}
 
 try:
     from local_settings import *
 except ImportError:
     pass
-    
