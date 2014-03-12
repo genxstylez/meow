@@ -5,6 +5,6 @@ from providers.models import Provider
 
 
 class ProvidersAdmin(admin.ModelAdmin):
-    list_display = ('name', 'url', 'css_selector')
+    list_display = ('name', 'url')
 
 admin.site.register(Provider, ProvidersAdmin)

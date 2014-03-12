@@ -1,0 +1,22 @@
+div.box {
+    padding: 5px;
+}
+
+img.pic {
+    margin: 0 auto;
+}
+
+div.title {
+    text-align: center;
+}
+
+.outsourced {
+    width: 80%;
+    height: 80%;
+    margin: 50px auto;
+}
+
+.outsourced iframe {
+    width: 100%;
+    height: 100%;
+}
