@@ -1,0 +1,7 @@
+django
+beautifulsoup4
+ipython
+django_extensions
+requests
+celery
+psycopg2
