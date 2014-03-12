@@ -4,5 +4,5 @@ ipython
 django_extensions
 requests
 celery[redis]
-psycopg2
+mysql-python
 blinker

@@ -62,7 +62,7 @@ WSGI_APPLICATION = 'meow.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'meow',
         'USER': 'meowuser',
         'PASSWORD': 'meowmeow'
