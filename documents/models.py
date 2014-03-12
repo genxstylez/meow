@@ -7,7 +7,7 @@ from providers.models import Provider
 class Document(models.Model):
     provider = models.ForeignKey(Provider)
     title = models.CharField(max_length=300)
-    href = models.CharField('Related url', max_length=500, unique=True)
+    href = models.CharField('Related url', max_length=255, unique=True)
     image = models.URLField(max_length=300)
     hits = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -20,4 +20,3 @@ class Document(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return ('document', [self.id])
-        
