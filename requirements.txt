@@ -6,3 +6,4 @@ requests
 celery[redis]
 mysql-python
 blinker
+gunicorn

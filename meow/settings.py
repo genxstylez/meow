@@ -62,10 +62,8 @@ WSGI_APPLICATION = 'meow.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'meow',
-        'USER': 'meowuser',
-        'PASSWORD': 'meowmeow'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -94,9 +92,21 @@ STATICFILES_DIRS = (
 
 # Celery Related
 # redis://:password@hostname:port/db_number
+
 BROKER_URL = 'redis://localhost:6379/0'
 
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+from datetime import timedelta
+CELERYBEAT_SCHEDULE = {
+    'crawl-every-hour': {
+        'task': 'tasks.crawl',
+        'schedule': timedelta(hours=1),
+        'args': None
+    },
+}
+
+CELERY_TIMEZONE = 'UTC'
 
 
 try:
