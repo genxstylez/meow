@@ -8,3 +8,4 @@ mysql-python
 blinker
 gunicorn
 django-pagination
+django-redis
