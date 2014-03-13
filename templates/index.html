@@ -1,4 +1,4 @@
-{% load static %}
+{% load static pagination_tags %}
 <html>
     <head>
         <title>{{ site_title }}</title>
@@ -7,9 +7,10 @@
     </head>
     <body>
         <div class="container">
-            <div class="row-fluid">
-            {% for doc in documents %}
-                <div itemscope itemtype="http://schema.org/WebPage" class="col-md-4 col-sm-4 col-xs-6" >
+            <div class="row">
+                {% autopaginate documents 50 %}
+                {% for doc in documents %}
+                <div itemscope itemtype="http://schema.org/WebPage" class="col-md-3 col-sm-4 col-xs-6" >
                     <div itemprop="audience" itemscope itemtype="http://schema.org/PeopleAudience" class="box" style="padding:15px;">
                         <meta itemprop="minAge" content="18"/>
                         <div class="row">
@@ -22,7 +23,12 @@
                         </div>
                     </div>
                 </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
+            <div class="row">
+                <div class="pull-right col-md-12 col-sm-12 cols-xs-12">
+                    {% paginate %}
+                </div>
             </div>
         </div>
     </body>
