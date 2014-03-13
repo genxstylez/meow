@@ -111,9 +111,18 @@ CELERYBEAT_SCHEDULE = {
 
 CELERY_TIMEZONE = 'UTC'
 
+# Logging
+
 LOGGING = {
     'version': 1,
 }
+
+# Templates
+
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates'),
+    os.path.join(BASE_DIR, '../templates'),
+)
 
 try:
     from local_settings import *
