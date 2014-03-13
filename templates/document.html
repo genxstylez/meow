@@ -1,12 +1,14 @@
 {% load static %}
 <html>
     <head>
+        <title>{{ document.title }}</title>
         <link href="{% static 'css/bootstrap-flatly.min.css' %}" rel="stylesheet" />
         <link href="{% static 'css/style.css' %}" rel="stylesheet" />
     </head>
     <body>
-        <div class="container">
-            <div class="outsourced">
+        <div itemscope itemtype="http://schema.org/WebPage" class="container">
+            <div temprop="audience" itemscope itemtype="http://schema.org/PeopleAudience" class="outsourced">
+                <meta itemprop="minAge" content="18"/>
                 <iframe src="{{ document.url }}"></iframe>
             </div>
         </div>

@@ -1,6 +1,7 @@
 {% load static %}
 <html>
     <head>
+        <title>{{ site_title }}</title>
         <link href="{% static 'css/bootstrap-flatly.min.css' %}" rel="stylesheet" />
         <link href="{% static 'css/style.css' %}" rel="stylesheet" />
     </head>
@@ -8,15 +9,16 @@
         <div class="container">
             <div class="row-fluid">
             {% for doc in documents %}
-                <div class="col-md-4 col-sm-4 col-xs-6" >
-                    <div class="box" style="padding:15px;">
+                <div itemscope itemtype="http://schema.org/WebPage" class="col-md-4 col-sm-4 col-xs-6" >
+                    <div itemprop="audience" itemscope itemtype="http://schema.org/PeopleAudience" class="box" style="padding:15px;">
+                        <meta itemprop="minAge" content="18"/>
                         <div class="row">
-                            <a href="{{ doc.url }}" target="_blank">
+                            <a itemprop="url" href="{{ doc.url }}" target="_blank">
                                 <img class="img-responsive img-rounded pic" src="{{ doc.image }}" />
                             </a>
                         </div>
                         <div class="row title">
-                            <a href="{{ doc.url }}" target="_blank">{{ doc.title|truncatechars:"30" }}</a>
+                            <a itemprop="url" href="{{ doc.url }}" target="_blank">{{ doc.title|truncatechars:"30" }}</a>
                         </div>
                     </div>
                 </div>

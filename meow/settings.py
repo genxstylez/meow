@@ -116,7 +116,7 @@ CELERYBEAT_SCHEDULE = {
 
 CELERY_TIMEZONE = 'UTC'
 
-#CELERY_IddMPORTS=("meow.tasks",) 
+#CELERY_IddMPORTS=("meow.tasks",)
 
 # Logging
 
@@ -130,6 +130,9 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
     os.path.join(BASE_DIR, '../templates'),
 )
+
+# Site title
+SITE_TILE = 'development'
 
 try:
     from local_settings import *
