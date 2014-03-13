@@ -5,6 +5,6 @@ from documents.models import Document
 
 
 class DocumentsAdmin(admin.ModelAdmin):
-    list_display = ('provider', 'title', 'rel_url')
+    list_display = ('provider', 'title', 'href')
 
 admin.site.register(Document, DocumentsAdmin)

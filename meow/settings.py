@@ -13,7 +13,6 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 ROOT_PATH = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
@@ -37,9 +36,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     'django_extensions',
+    'meow',
     'documents',
-    'providers'
+    'providers',
+    'gunicorn'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -86,3 +88,34 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(ROOT_PATH, 'static')
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
+
+# Celery Related
+# redis://:password@hostname:port/db_number
+
+BROKER_URL = 'redis://localhost:6379/0'
+
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+from datetime import timedelta
+CELERYBEAT_SCHEDULE = {
+    'crawl-every-hour': {
+        'task': 'tasks.crawl',
+        'schedule': timedelta(hours=1),
+        'args': None
+    },
+}
+
+CELERY_TIMEZONE = 'UTC'
+
+LOGGING = {
+    'version': 1,
+}
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
