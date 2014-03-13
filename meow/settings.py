@@ -27,6 +27,10 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
 
+ADMINS = (
+    ('Sam Liu', 'genxstylez@gmail.com'),
+)
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -98,18 +102,21 @@ STATICFILES_DIRS = (
 
 BROKER_URL = 'redis://localhost:6379/0'
 
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/1'
 
 from datetime import timedelta
+
 CELERYBEAT_SCHEDULE = {
     'crawl-every-hour': {
-        'task': 'tasks.crawl',
+        'task': 'meow.tasks.crawl',
         'schedule': timedelta(hours=1),
         'args': None
     },
 }
 
 CELERY_TIMEZONE = 'UTC'
+
+#CELERY_IddMPORTS=("meow.tasks",) 
 
 # Logging
 

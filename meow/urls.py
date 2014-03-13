@@ -10,6 +10,6 @@ urlpatterns = patterns('',
 
     url(r'^$', 'meow.views.index', name='index'),
     url(r'^document/(?P<document_id>\d+)/$', 'documents.views.document', name='document'),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^meowadmin/', include(admin.site.urls)),
     (r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps})
 )
