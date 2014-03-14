@@ -2,9 +2,22 @@
     {% block meta %}
     <title>{{ site_title }} - {{ document.title }}</title>
     {% endblock %}
+
     {% block content %}
         <div itemprop="audience" itemscope itemtype="http://schema.org/PeopleAudience" class="outsourced">
             <meta itemprop="minAge" content="18"/>
             <iframe src="{{ document.url }}"></iframe>
         </div>
+    {% endblock %}
+
+    {% block post_scripts %}
+    <script type="text/javascript">
+        $(function() {
+            var id = '{{ document.id }}';
+            $.ajax({
+                url:'/document/hits/'+ id,
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            });
+        });
+    </script>
     {% endblock %}
