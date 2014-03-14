@@ -10,5 +10,7 @@ def index(request):
     documents = Document.objects.order_by('hits')
     return render(request, 'index.html', {
         'documents': documents,
-        'site_title': settings.SITE_TITLE
+        'site_title': settings.SITE_TITLE,
+        'site_keywords': settings.SITE_KEYWORDS,
+        'site_description': settings.SITE_DESCRIPTION
     })

@@ -158,8 +158,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 
-# Site title
+# Site headins
 SITE_TITLE = 'development'
+
+SITE_KEYWORDS = 'development'
+
+SITE_DESCRIPTION = 'development'
 
 try:
     from local_settings import *

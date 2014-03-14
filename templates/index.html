@@ -16,7 +16,7 @@
                     <div itemprop="audience" itemscope itemtype="http://schema.org/PeopleAudience" class="box" style="padding:15px;">
                         <meta itemprop="minAge" content="18"/>
                         <div class="row">
-                            <a itemprop="url" href="{{ doc.url }}" target="_blank">
+                            <a itemprop="url" href="{% url document doc.id %}" target="_blank">
                                 <img alt="{{ doc.title }}" class="img-responsive img-rounded pic" src="{{ doc.image }}" />
                             </a>
                         </div>
