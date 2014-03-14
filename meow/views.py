@@ -12,5 +12,7 @@ def index(request):
         'documents': documents,
         'site_title': settings.SITE_TITLE,
         'site_keywords': settings.SITE_KEYWORDS,
-        'site_description': settings.SITE_DESCRIPTION
+        'site_description': settings.SITE_DESCRIPTION,
+        'site_brand': settings.SITE_BRAND,
+        'site_slogan': settings.SITE_SLOGAN
     })

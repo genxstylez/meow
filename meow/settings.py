@@ -165,6 +165,10 @@ SITE_KEYWORDS = 'development'
 
 SITE_DESCRIPTION = 'development'
 
+SITE_BRAND = 'development'
+
+SITE_SLOGAN = 'development'
+
 try:
     from local_settings import *
 except ImportError:
