@@ -3,6 +3,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.conf import settings
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_protect
 
 from documents.models import Document
 
@@ -18,6 +19,7 @@ def document(request, document_id):
     )
 
 
+@csrf_protect
 def hits(request, document_id):
     if request.is_ajax():
         doc = get_object_or_404(Document, id=document_id)

@@ -15,7 +15,8 @@
         $(function() {
             var id = '{{ document.id }}';
             $.ajax({
-                url:'/document/hits/'+ id,
+                cache: false,
+                url:'/document/hits/'+ id + '/',
                 headers: {'X-CSRFToken': '{{ csrf_token }}'},
             });
         });
