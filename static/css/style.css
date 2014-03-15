@@ -1,9 +1,14 @@
+div.outerbox {
+    height: 250px;
+}
+
 div.box {
-    padding: 5px;
+    padding: 15px;
 }
 
 img.pic {
     margin: 0 auto;
+    height: 55%;
 }
 
 div.title {
@@ -23,4 +28,8 @@ div.title {
 
 .pull-right .pagination {
     float: right;
+}
+
+.well {
+    background-color: #495457;
 }
