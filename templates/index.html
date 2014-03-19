@@ -36,3 +36,11 @@
             </div>
         </div>
     {% endblock %}
+
+    {% block post_scripts %}
+    <script type="text/javascript">
+        $(function() {
+            $('img.lazy').lazyload();
+        });
+    </script>
+    {% endblock %}
