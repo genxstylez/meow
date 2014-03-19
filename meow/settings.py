@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
+ROOT_PATH = os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), os.pardir), os.pardir))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -27,6 +27,10 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
 
+ADMINS = (
+    ('Sam Liu', 'genxstylez@gmail.com'),
+)
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -41,16 +45,20 @@ INSTALLED_APPS = (
     'meow',
     'documents',
     'providers',
-    'gunicorn'
+    'gunicorn',
+    'pagination'
 )
 
 MIDDLEWARE_CLASSES = (
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'pagination.middleware.PaginationMiddleware',
 )
 
 ROOT_URLCONF = 'meow.urls'
@@ -82,10 +90,24 @@ USE_L10N = True
 USE_TZ = True
 
 
+# Cache
+
+CACHES = {
+    "default": {
+        "BACKEND": "redis_cache.cache.RedisCache",
+        "LOCATION": "127.0.0.1:6379:2",
+        "OPTIONS": {
+            "CLIENT_CLASS": "redis_cache.client.DefaultClient",
+        }
+    }
+}
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(ROOT_PATH, 'static')
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
@@ -96,12 +118,13 @@ STATICFILES_DIRS = (
 
 BROKER_URL = 'redis://localhost:6379/0'
 
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/1'
 
 from datetime import timedelta
+
 CELERYBEAT_SCHEDULE = {
     'crawl-every-hour': {
-        'task': 'tasks.crawl',
+        'task': 'meow.tasks.crawl',
         'schedule': timedelta(hours=1),
         'args': None
     },
@@ -109,9 +132,42 @@ CELERYBEAT_SCHEDULE = {
 
 CELERY_TIMEZONE = 'UTC'
 
+#CELERY_IddMPORTS=("meow.tasks",)
+
+# Logging
+
 LOGGING = {
     'version': 1,
 }
+
+# Templates
+
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates'),
+    os.path.join(BASE_DIR, '../templates'),
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.core.context_processors.tz",
+    "django.core.context_processors.request"
+)
+
+
+# Site headins
+SITE_TITLE = 'development'
+
+SITE_KEYWORDS = 'development'
+
+SITE_DESCRIPTION = 'development'
+
+SITE_BRAND = 'development'
+
+SITE_SLOGAN = 'development'
 
 try:
     from local_settings import *

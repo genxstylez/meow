@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load pagination_tags %}
+
+    {% block meta %}
+    <meta name="keywords" content="{{ site_keywords }}">
+    <meta name="description" content="{{ site_description }}">
+    <title>{{ site_title }}</title>
+    {% endblock %}
+
+    {% block pre_scripts %}
+    <script type="text/javascript" src="{% static 'js/jquery.lazyload.min.js"></script>
+    {% endblock %}
+
+    {% block content %}
+        <div class="row">
+            {% autopaginate documents 52 %}
+            {% for doc in documents %}
+            <div itemscope itemtype="http://schema.org/WebPage" class="outerbox col-md-3 col-sm-6 col-xs-12" >
+                <div itemprop="audience" itemscope itemtype="http://schema.org/PeopleAudience" class="box well well-sm"> 
+                    <meta itemprop="minAge" content="18"/>
+                    <div class="row">
+                        <a data-id="{{ doc.id }}" itemprop="url" href="{% url 'document' doc.id %}" target="_blank">
+                            <img alt="{{ doc.title }}" class="img-responsive img-rounded pic" src="{{ doc.image }}" />
+                        </a>
+                    </div>
+                    <div class="row title">
+                        <h5><a data-id="{{ doc.id }}" itemprop="url" href="{% url 'document' doc.id %}" target="_blank">{{ doc.title|truncatechars:"30" }}</a></h5>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <div class="pull-right col-md-12 col-sm-12 cols-xs-12">
+                {% paginate %}
+            </div>
+        </div>
+    {% endblock %}
