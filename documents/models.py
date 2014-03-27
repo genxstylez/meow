@@ -4,12 +4,23 @@ from django.db import models
 from providers.models import Provider
 
 
+class Category(models.Model):
+    title = models.CharField(max_length=200)
+
+    def __unicode__(self):
+        return self.title
+
+
 class Document(models.Model):
     provider = models.ForeignKey(Provider)
+    categories = models.ManyToManyField(Category)
     title = models.CharField(max_length=300)
     href = models.CharField('Related url', max_length=255, unique=True)
     image = models.URLField(max_length=300)
-    hits = models.PositiveIntegerField(default=0)
+    views = models.PositiveIntegerField(default=0)
+    embed = models.CharField(max_length=300)
+    desc = models.CharField(max_length=300, blank=True)
+    duration = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
 
