@@ -46,7 +46,8 @@ INSTALLED_APPS = (
     'documents',
     'providers',
     'gunicorn',
-    'pagination'
+    'pagination',
+    'south'
 )
 
 MIDDLEWARE_CLASSES = (

@@ -23,7 +23,7 @@ def document(request, document_id):
 def hits(request, document_id):
     if request.is_ajax():
         doc = get_object_or_404(Document, id=document_id)
-        doc.hits += 1
+        doc.views += 1
         doc.save()
         return HttpResponse(200)
 

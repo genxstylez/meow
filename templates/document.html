@@ -6,7 +6,19 @@
     {% block content %}
         <div itemprop="audience" itemscope itemtype="http://schema.org/PeopleAudience" class="outsourced">
             <meta itemprop="minAge" content="18"/>
-            <iframe src="{{ document.url }}"></iframe>
+            <div class="row">
+                {{ document.embed|safe }}
+            </div>
+
+            <div class="row">
+                <p>Description: {{ document.desc }}</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6"><p>Duration: {{ document.duration }}</p></div>
+                <div class="col-md-6"><p>Views: {{ document.views }}</p></div>
+            </div>
+            
         </div>
     {% endblock %}
 
@@ -16,7 +28,7 @@
             var id = '{{ document.id }}';
             $.ajax({
                 cache: false,
-                url:'/document/hits/'+ id + '/',
+                url:'/document/hits/',
                 headers: {'X-CSRFToken': '{{ csrf_token }}'},
             });
         });
