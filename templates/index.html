@@ -8,23 +8,29 @@
     {% endblock %}
 
     {% block pre_scripts %}
-    <script type="text/javascript" src="{% static 'js/jquery.lazyload.min.js' %}"></script>
+    {% comment %}<script type="text/javascript" src="{% static 'js/jquery.lazyload.min.js' %}"></script>{% endcomment %}
     {% endblock %}
 
     {% block content %}
-        <div class="row">
+        <div class="row" id="isotope-container">
             {% autopaginate documents 52 %}
             {% for doc in documents %}
-            <div itemscope itemtype="http://schema.org/WebPage" class="outerbox col-md-3 col-sm-6 col-xs-12" >
-                <div itemprop="audience" itemscope itemtype="http://schema.org/PeopleAudience" class="box well well-sm"> 
+            <div itemscope itemtype="http://schema.org/WebPage" class="item col-md-3 col-sm-6 col-xs-12" >
+                <div itemprop="audience" itemscope itemtype="http://schema.org/PeopleAudience" class="thumbnail"> 
                     <meta itemprop="minAge" content="18"/>
-                    <div class="row">
-                        <a data-id="{{ doc.id }}" itemprop="url" href="{% url 'document' doc.id %}" target="_blank">
-                            <img alt="{{ doc.title }}" class="lazy img-responsive img-rounded pic" data-original="{{ doc.image }}" />
+                        <a class="block-a" data-id="{{ doc.id }}" itemprop="url" href="{% url 'document' doc.id %}" target="_blank">
+                            <img alt="{{ doc.title }}" class="img-responsive img-rounded pic" data-original="{{ doc.image }}" src="{{ doc.image }}" />
                         </a>
+                    <div class="caption text-center">
+                        <h6><a data-id="{{ doc.id }}" itemprop="url" href="{% url 'document' doc.id %}" target="_blank">{{ doc.title|truncatechars:"30" }}</a></h6>
                     </div>
-                    <div class="row title">
-                        <h5><a data-id="{{ doc.id }}" itemprop="url" href="{% url 'document' doc.id %}" target="_blank">{{ doc.title|truncatechars:"30" }}</a></h5>
+                    <div class="row stats">
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <p class="text-center">Duration: {{ doc.duration }}</p>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <p class="text-center">Views: {{ doc.views }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -40,6 +46,9 @@
     {% block post_scripts %}
     <script type="text/javascript">
         $(function() {
+            var $container = $('#isotope-container').imagesLoaded( function() {
+                $container.isotope();
+            });
             $('img.lazy').lazyload();
         });
     </script>

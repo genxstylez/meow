@@ -6,6 +6,7 @@
     {% block content %}
         <div itemprop="audience" itemscope itemtype="http://schema.org/PeopleAudience" class="outsourced">
             <meta itemprop="minAge" content="18"/>
+            <h3>{{ document.title }}</h3>
             <div class="row">
                 {{ document.embed|safe }}
             </div>
