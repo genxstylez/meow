@@ -3,13 +3,14 @@
 from django.shortcuts import render
 from django.conf import settings
 
-from documents.models import Document
+from documents.models import Document, Cateogory
 
 
 def index(request):
+    categories = Cateogory.objects.order_by('-document')[:10]  # Sort by number of document associated
     documents = Document.objects.order_by('-views')
-
     return render(request, 'index.html', {
+        'categories': categories,
         'documents': documents,
         'site_title': settings.SITE_TITLE,
         'site_keywords': settings.SITE_KEYWORDS,
