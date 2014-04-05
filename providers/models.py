@@ -14,3 +14,6 @@ class Provider(models.Model):
         if self.codename == 'XH':
             from providers.signals import one
             one.send(self)
+        if self.codename == 'YJ':
+            from providers.signals import two
+            two.send(self)

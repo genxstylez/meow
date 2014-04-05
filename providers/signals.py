@@ -5,9 +5,8 @@ import locale
 from blinker import signal
 from bs4 import BeautifulSoup
 
-
-command = signal('command')
 one = signal('1')
+two = signal('2')
 
 
 def make_request(url):
@@ -35,7 +34,7 @@ def save_document(provider, title, href, image, embed, desc, duration, views, ca
         doc.save()
 
         for category in categories:
-            cat = Category.objects.get_or_create(title=category.text)
+            cat = Category.objects.get_or_create(title=category.text.strip())
             doc.categories.add(cat[0])
 
 """
@@ -51,15 +50,7 @@ def processOne(sender):
         save_document(sender, title, href, image)
 
 
-@two.connect
-def processsTwo(sender):
-    soup = make_request(sender)
-    itemList = soup.select('#miniatura')
-    for item in itemList:
-        title = item.find(id='title1').text
-        href = item.find(class_='frame').get('href')
-        image = item.find('img', class_='lazy').get('data-original')
-        save_document(sender, title, href, image)
+
 """
 
 
@@ -82,5 +73,25 @@ def processOne(sender):
         duration = second_soup.select('div#videoInfoBox')[0].select('td#videoUser')[0].select('.item')[1].text.strip('Runtime: ')
         views = second_soup.select('div#videoInfoBox')[0].select('td#videoUser')[0].select('.item')[2].text.strip('Views: ')
         categories = second_soup.select('div#videoInfoBox')[0].select('#channels a')
+
+        save_document(sender, title, href, image, embed, desc, duration, views, categories)
+
+
+@two.connect
+def processsTwo(sender):
+    soup = make_request(sender.url)
+    itemList = soup.select('#miniatura')
+    for item in itemList:
+        title = item.find(id='title1').text
+        href = sender.url.strip('/') + item.find(class_='frame').get('href')
+        image = item.find('img', class_='lazy').get('data-original')
+        duration = item.select('span#title2 span.thumbtime')[0].text.strip()
+        views = item.select('span#title2 span.thumbviews')[0].text.strip('Views: ')
+        desc = ''
+
+        # Dig deeper
+        second_soup = make_request(href)
+        embed = second_soup.select('div.embedInfo iframe')[0]
+        categories = second_soup.select('#tags a')[1:]
 
         save_document(sender, title, href, image, embed, desc, duration, views, categories)
