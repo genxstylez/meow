@@ -10,3 +10,4 @@ gunicorn
 django-pagination
 django-redis
 south
+gevent
