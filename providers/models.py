@@ -6,6 +6,7 @@ class Provider(models.Model):
     name = models.CharField(max_length=100)
     url = models.URLField(max_length=100)
     codename = models.CharField(max_length=2)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return self.name
@@ -17,3 +18,7 @@ class Provider(models.Model):
         if self.codename == 'YJ':
             from providers.signals import two
             two.send(self)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('provider', [self.id])

@@ -5,7 +5,7 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_protect
 
-from documents.models import Document
+from documents.models import Document, Category
 
 
 def document(request, document_id):
@@ -13,6 +13,19 @@ def document(request, document_id):
 
     return render(request, 'document.html', {
         'document': document,
+        'site_title': settings.SITE_TITLE,
+        'site_brand': settings.SITE_BRAND,
+        'site_slogan': settings.SITE_SLOGAN}
+    )
+
+
+def category(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    documents = category.docs.all()
+
+    return render(request, 'category.html', {
+        'category': category,
+        'documents': documents,
         'site_title': settings.SITE_TITLE,
         'site_brand': settings.SITE_BRAND,
         'site_slogan': settings.SITE_SLOGAN}
