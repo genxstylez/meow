@@ -21,7 +21,6 @@ class Document(models.Model):
     categories = models.ManyToManyField(Category, related_name='docs')
     title = models.CharField(max_length=300)
     href = models.CharField('Related url', max_length=255, unique=True)
-    image = models.URLField(max_length=300)
     views = models.PositiveIntegerField(default=0)
     embed = models.CharField(max_length=300)
     desc = models.CharField(max_length=300, blank=True)
@@ -36,3 +35,8 @@ class Document(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return ('document', [self.id])
+
+
+class Image(models.Model):
+    document = models.ForeignKey(Document, related_name='images')
+    url = models.URLField(max_length=300)

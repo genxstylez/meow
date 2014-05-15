@@ -2,6 +2,7 @@
 
 import requests
 import locale
+import urlparse
 from blinker import signal
 from bs4 import BeautifulSoup
 
@@ -9,72 +10,69 @@ one = signal('1')
 two = signal('2')
 
 
-def make_request(url):
-    content = requests.get(url).content
+def make_request(url, mobile=False):
+    if mobile:
+        content = requests.get(url, headers={'User-Agent': 'Mozilla/5.0 (Linux; Android 4.1.1; Nexus 7 Build/JRO03D)\
+         AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166  Safari/535.19'}).content
+    else:
+        content = requests.get(url).content
     soup = BeautifulSoup(content)
     return soup
 
 
-def save_document(provider, title, href, image, embed, desc, duration, views, categories):
-    from documents.models import Document, Category
+def save_document(provider, title, href, images, embed, desc, duration, views, categories):
+    from documents.models import Document, Category, Image
 
     try:
-        Document.objects.get(href=href)
+        doc = Document.objects.get(href=href)
     except Document.DoesNotExist:
         doc = Document()
         doc.provider = provider
         doc.title = title
         doc.href = href
-        doc.image = image
         doc.embed = embed
         doc.desc = desc
         doc.duration = duration
-        locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
-        doc.views = locale.atoi(views)
-        doc.save()
 
-        for category in categories:
-            cat = Category.objects.get_or_create(title=category.text.strip())
-            doc.categories.add(cat[0])
+    locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+    doc.views = locale.atoi(views)
+    doc.save()
 
-"""
-DEPRECATED
-@one.connect
-def processOne(sender):
-    soup = make_request(sender)
-    itemList = soup.select('.flipbook')
-    for item in itemList:
-        title = item.get('alt')
-        href = item.parent.get('href')
-        image = item.get('data-path').replace('{index}', '2')
-        save_document(sender, title, href, image)
+    for image_url in images:
+        print image_url
+        image = Image()
+        image.document = doc
+        image.url = image_url
+        image.save()
 
-
-
-"""
+    for category in categories:
+        cat = Category.objects.get_or_create(title=category.text.strip())
+        doc.categories.add(cat[0])
 
 
 @one.connect
 def processOne(sender):
-    soup = make_request(sender.url)
+    soup = make_request(sender.url, mobile=True)
     itemList = soup.select('div.video')
     for item in itemList:
-        title = item.select('u')[0].text
-        image = item.select('img')[0].get('src')
-        href = item.select('a')[0].get('href')
+        title = item.select('a')[0].get('title')
+        image = item.select('a img')[0].get('src')
+        href = urlparse.urljoin(sender.url, item.select('a')[0].get('href'))
+        duration = soup.select('div.time span.d')[0].text
 
+        print href
         # Here we make second request
-        second_soup = make_request(href)
-        embed = second_soup.select('div#shareBox')[0].select('iframe')[0]
-        try:
-            desc = second_soup.select('div#videoInfoBox')[0].select('td.desc')[0].text.strip('Description: ')
-        except IndexError:
-            desc = ''
-        duration = second_soup.select('div#videoInfoBox')[0].select('td#videoUser')[0].select('.item')[1].text.strip('Runtime: ')
-        views = second_soup.select('div#videoInfoBox')[0].select('td#videoUser')[0].select('.item')[2].text.strip('Views: ')
-        categories = second_soup.select('div#videoInfoBox')[0].select('#channels a')
+        second_soup = make_request(href, mobile=True)
+        embed = second_soup.select('div#html5_vid a')[0].get('href')
+        desc = ''
 
-        save_document(sender, title, href, image, embed, desc, duration, views, categories)
+        views = second_soup.select('table#ratingsTable .rating-number')[1].text
+        categories = second_soup.select('table#catsAndStars tr')[3].select('a')
+        images = []
+        for i in range(1, 17):
+            images.append(image.split('.jpg')[0][:-5] + '_0%02dm' % i + '.jpg')
+
+        save_document(sender, title, href, images, embed, desc, duration, views, categories)
 
 
 @two.connect
@@ -82,16 +80,26 @@ def processsTwo(sender):
     soup = make_request(sender.url)
     itemList = soup.select('#miniatura')
     for item in itemList:
-        title = item.find(id='title1').text
-        href = sender.url.strip('/') + item.find(class_='frame').get('href')
-        image = item.find('img', class_='lazy').get('data-original')
+        href = urlparse.urljoin(sender.url, item.find(class_='frame').get('href'))
         duration = item.select('span#title2 span.thumbtime')[0].text.strip()
         views = item.select('span#title2 span.thumbviews')[0].text.strip('Views: ')
         desc = ''
 
         # Dig deeper
         second_soup = make_request(href)
-        embed = second_soup.select('div.embedInfo iframe')[0]
+        title = second_soup.select('#video_text h3')[0].text
         categories = second_soup.select('#tags a')[1:]
 
-        save_document(sender, title, href, image, embed, desc, duration, views, categories)
+        image = item.find('img', class_='lazy').get('data-original')
+        images = []
+        images.append(image)
+        for i in range(2, 9):
+            images.append(image.replace('flv-1', 'flv-%s' % i))
+
+        mobile_href = urlparse.urljoin(sender.mobile_url, item.find(class_='frame').get('href'))
+
+        mobile_soup = make_request(mobile_href)
+
+        embed = mobile_soup.select('a.preview_thumb')[0].get('href')
+
+        save_document(sender, title, href, images, embed, desc, duration, views, categories)

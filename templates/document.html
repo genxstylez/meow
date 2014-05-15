@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
     {% block meta %}
     <title>{{ site_title }} - {{ document.title }}</title>
     {% endblock %}
@@ -12,9 +13,10 @@
                 </div>
 
                 <div itemprop="audience" itemscope itemtype="http://schema.org/PeopleAudience" class="panel-body">
-                    <div class="row centered">
-                        {{ document.embed|safe }}
-                    </div>
+                    <div class="row centered" id="player"></div>
+                    <video width="100%" controls>
+                        <source src="{{ document.embed }}">
+                    </video>
                     <br />
                     <p><span class="label label-success">Description</span>{{ document.desc }}</p>
                     <p>
