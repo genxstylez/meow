@@ -60,7 +60,6 @@ def processOne(sender):
         href = urlparse.urljoin(sender.url, item.select('a')[0].get('href'))
         duration = soup.select('div.time span.d')[0].text
 
-        print href
         # Here we make second request
         second_soup = make_request(href, mobile=True)
         embed = second_soup.select('div#html5_vid a')[0].get('href')
