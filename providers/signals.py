@@ -37,6 +37,7 @@ def save_document(provider, title, href, images, embed, desc, duration, views, c
     locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
     doc.views = locale.atoi(views)
     doc.save()
+    print doc
 
     for image_url in images:
         print image_url
