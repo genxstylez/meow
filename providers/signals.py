@@ -38,12 +38,14 @@ def save_document(provider, title, href, images, embed, desc, duration, views, c
     doc.views = locale.atoi(views)
     doc.save()
     
-    if doc.images.counts() == 0:
+    if doc.images.count() == 0:
         for image_url in images:
-            image = Image()
-            image.document = doc
-            image.url = image_url
-            image.save()
+            response = requests.get(image_url)
+            if response.status_code == 200:
+                image = Image()
+                image.document = doc
+                image.url = image_url
+                image.save()
 
     for category in categories:
         cat = Category.objects.get_or_create(title=category.text.strip())
