@@ -37,14 +37,13 @@ def save_document(provider, title, href, images, embed, desc, duration, views, c
     locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
     doc.views = locale.atoi(views)
     doc.save()
-    print doc
-
-    for image_url in images:
-        print image_url
-        image = Image()
-        image.document = doc
-        image.url = image_url
-        image.save()
+    
+    if doc.images.counts() == 0:
+        for image_url in images:
+            image = Image()
+            image.document = doc
+            image.url = image_url
+            image.save()
 
     for category in categories:
         cat = Category.objects.get_or_create(title=category.text.strip())
