@@ -129,6 +129,12 @@ CELERYBEAT_SCHEDULE = {
         'schedule': timedelta(hours=1),
         'args': None
     },
+    'refresh-every-quarter': {
+        'task': 'meow.tasks.refresh_embed',
+        'schedule': timedelta(minutes=15),
+        'args': None
+    },
+
 }
 
 CELERY_TIMEZONE = 'UTC'
