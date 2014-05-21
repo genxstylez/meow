@@ -68,7 +68,7 @@ def processOne(sender):
         desc = ''
 
         views = second_soup.select('table#ratingsTable .rating-number')[1].text
-        categories = second_soup.select('table#catsAndStars tr')[3].select('a')
+        categories = second_soup.select('table#catsAndStars tr')[2].select('a')
         images = []
         for i in range(1, 17):
             images.append(image.split('.jpg')[0][:-5] + '_0%02dm' % i + '.jpg')

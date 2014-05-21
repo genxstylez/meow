@@ -26,10 +26,13 @@ def refresh_embed():
     documents = Document.objects.all()
     for document in documents:
         soup = make_request(document.href, mobile=True)
-        if document.provider.codename == 'RT':
-            embed = soup.select('div#html5_vid a')[0].get('href')
-        elif document.provider.codename == 'YJ':
-            embed = soup.select('a.preview_thumb')[0].get('href')
+        try:
+            if document.provider.codename == 'RT':
+                embed = soup.select('div#html5_vid a')[0].get('href')
+            elif document.provider.codename == 'YJ':
+                embed = soup.select('a.preview_thumb')[0].get('href')
 
-        document.embed = embed
-        document.save()
+            document.embed = embed
+            document.save()
+        except IndexError:
+            document.delete()
