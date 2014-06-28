@@ -2,14 +2,26 @@
 
 from django.shortcuts import render, get_object_or_404
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.views.decorators.csrf import csrf_protect
 
+from providers.signals import make_request
 from documents.models import Document, Category
 
 
 def document(request, document_id):
     document = get_object_or_404(Document, id=document_id)
+    soup = make_request(document.href, mobile=True)
+    try:
+        if document.provider.codename == 'RT':
+            embed = soup.select('div#html5_vid a')[0].get('href')
+        elif document.provider.codename == 'YJ':
+            embed = soup.select('a.preview_thumb')[0].get('href')
+
+        document.embed = embed
+        document.save()
+    except IndexError:
+        raise Http404
 
     return render(request, 'document.html', {
         'document': document,

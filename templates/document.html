@@ -40,7 +40,7 @@
             var id = '{{ document.id }}';
             $.ajax({
                 cache: false,
-                url:'/document/hits/',
+                url:'/document/hits/' + id + '/',
                 headers: {'X-CSRFToken': '{{ csrf_token }}'},
             });
         });
