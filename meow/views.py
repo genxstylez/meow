@@ -8,7 +8,7 @@ from documents.models import Document, Category
 
 def index(request):
     categories = Category.objects.order_by('-document')[:10]  # Sort by number of document associated
-    documents = Document.objects.order_by('-views')
+    documents = Document.objects.order_by('-views')[:1000]
     return render(request, 'index.html', {
         'categories': categories,
         'documents': documents,

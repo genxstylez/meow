@@ -16,8 +16,8 @@ def crawl():
     for provider in Provider.objects.all():
         provider.get_contents()
 
-    keep = Document.objects.order_by('-views')[:1000].values_list('id', flat=True)
-    Document.objects.exclude(pk__in=list(keep)).delete()
+    #keep = Document.objects.order_by('-views')[:1000].values_list('id', flat=True)
+    #Document.objects.exclude(pk__in=list(keep)).delete()
     # Keep the 1000 most viewed
 
 
