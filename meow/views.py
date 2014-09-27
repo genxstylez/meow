@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from django.http import Http404
+#from django.http import Http404
 from django.shortcuts import render
 from django.conf import settings
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+#from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+from django.views.decorators.cache import cache_page
 
 from documents.models import Document, Category
 
 
+@cache_page(60 * 15)
 def index(request):
     categories = Category.objects.order_by('-document')[:10]  # Sort by number of document associated
     documents = Document.objects.order_by('-last_modified')[:1000]
