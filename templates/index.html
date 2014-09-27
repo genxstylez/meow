@@ -8,13 +8,13 @@
     {% endblock %}
 
     {% block pre_scripts %}
-    {% comment %}<script type="text/javascript" src="{% static 'js/jquery.lazyload.min.js' %}"></script>{% endcomment %}
-
+    <script type="text/javascript" src="{% static 'js/jquery.lazyload.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.infinitescroll.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/infinitescroll.local.js' %}"></script>
     {% endblock %}
 
     {% block content %}
         <div class="row" id="isotope-container">
-            {% autopaginate documents 52 %}
             {% for doc in documents %}
             <div itemscope itemtype="http://schema.org/WebPage" class="item col-md-3 col-sm-6 col-xs-12" >
                 <div itemprop="audience" itemscope itemtype="http://schema.org/PeopleAudience" class="thumbnail"> 
@@ -27,9 +27,15 @@
                             </ol>
                             <div class="carousel-inner">
                                 {% for image in doc.images.all %}
-                                <div class="item {% if forloop.counter == 1 %}active{% endif%}">
-                                    <img style="width:100%" alt="{{ doc.title }}" class="img-responsive img-rounded pic" data-original="{{ image.url }}" src="{{ image.url }}" />
-                                </div>
+                                    {% if forloop.counter == 1 %}
+                                    <div class="item active">
+                                        <img style="width:100%" alt="{{ doc.title }}" class="img-responsive img-rounded pic lazy" data-original="{{ image.url }}" src="{% static 'img/oporn.png' %}" />
+                                    </div>
+                                    {% else %}
+                                    <div class="item">
+                                        <img style="width:100%" alt="{{ doc.title }}" class="img-responsive img-rounded pic" data-original="{{ image.url }}" src="{{ image.url }}" />
+                                    </div>
+                                    {% endif %}
                                 {% endfor %}
                             </div>
                         </a>
@@ -51,24 +57,50 @@
             </div>
             {% endfor %}
         </div>
-        <div class="row">
-            <div class="pull-right col-md-12 col-sm-12 cols-xs-12">
-                {% paginate %}
-            </div>
-        </div>
+        {% if documents.has_next %}
+        <nav id="page_nav" style="display:none;">
+            <a href="?page={{ documents.next_page_number }}">next</a>
+        </nav>
+        {% endif %}
     {% endblock %}
 
     {% block post_scripts %}
     <script type="text/javascript">
         $(function() {
+            $('img.lazy').lazyload();
             var $container = $('#isotope-container').imagesLoaded( function() {
                 $container.isotope();
+                $('[id^="myCarousel"]').carousel('cycle', {
+                    interval: 100
+                });
             });
-            //$('img.lazy').lazyload();
+
+            $container.infinitescroll({
+                    navSelector: '#page_nav',
+                    nextSelector: '#page_nav a',
+                    itemSelector: '#isotope-container .item.col-md-3.col-sm-6.col-xs-12',
+                    loading: {
+                        finished: undefined,
+                        msgText: 'Loading new porns...',
+                        img: undefined,
+                        speed: 'slow',
+                        finishedMsg: "You have reached the end!"
+                    },
+                    
+                    extraScrollPx: 150,
+                    bufferPx: 5
+                },
+                function(newElements) {
+                    var $newElems = $(newElements).css({opacity: 0});
+                     $newElems.imagesLoaded(function(){
+                      // show elems now they're ready
+                      $newElems.animate({ opacity: 1 });
+                      $container.isotope( 'appended', $newElems, true ); 
+                    });
+                }
+            );
         });
-        $('[id^="myCarousel"]').carousel('cycle', {
-            interval: 100
-        });
+        
     </script>
 
     {% endblock %}
