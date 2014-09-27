@@ -10,7 +10,8 @@ from documents.models import Document, Category
 
 def index(request):
     categories = Category.objects.order_by('-document')[:10]  # Sort by number of document associated
-    documents = Document.objects.order_by('-views')[:1000]
+    documents = Document.objects.order_by('-last_modified')[:1000]
+    '''
     paginator = Paginator(documents, 25)
 
     page = request.GET.get('page')
@@ -21,7 +22,7 @@ def index(request):
         documents = paginator.page(1)
     except EmptyPage:
         raise Http404
->>>>>>> ae4a1c05ecb7a742debaea084b65b0103b1fdbd4
+    '''
     return render(request, 'index.html', {
         'categories': categories,
         'documents': documents,
