@@ -17,7 +17,7 @@
         <div class="row" id="isotope-container">
             {% autopaginate documents 20 %}
             {% for doc in documents %}
-            <div itemscope itemtype="http://schema.org/WebPage" class="item col-md-3 col-sm-6 col-xs-12" >
+            <div itemscope itemtype="http://schema.org/WebPage" class="item col-lg-2 col-md-2 col-sm-6 col-xs-12" >
                 <div itemprop="audience" itemscope itemtype="http://schema.org/PeopleAudience" class="thumbnail"> 
                     <meta itemprop="minAge" content="18"/>
                         <a class="block-a carousel slide" id="myCarousel{{ doc.id }}" data-slide="carousel" data-id="{{ doc.id }}" itemprop="url" href="{% url 'document' doc.id %}" target="_blank">

@@ -14,8 +14,10 @@
     </head>
     <body>
         <div class="container-fluid">
-            <div class="title heading">
-                <a href="/"><h1>{{ site_brand }}  <small>{{ site_slogan }}</small></h1></a>
+            <div class="row">
+                <div class="title heading col-md-2 col-sm-6 col-xs-12 col-lg-2">
+                    <a href="/"><h3>{{ site_brand }}  <small>{{ site_slogan }}</small></h3></a>
+                </div>
             </div>
 
             {% block content %}

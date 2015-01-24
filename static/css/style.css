@@ -8,13 +8,13 @@ h1 {
 
 div.heading {
     margin-top: 0px;
-    height: 90px;
     padding: 10px;
-    background: #DB0A5B;
+    background: #34495e;
     margin-bottom: 15px;
 }
 
-div.heading h1 {
+div.heading h3 {
+    color: #DE83B3;
     margin: 0px;
 }
 
