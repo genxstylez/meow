@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import urlparse
+
 from django.shortcuts import render, get_object_or_404
 from django.conf import settings
 from django.http import HttpResponse, Http404
@@ -16,7 +18,9 @@ def document(request, document_id):
         if document.provider.codename == 'RT':
             embed = soup.select('div#html5_vid a')[0].get('href')
         elif document.provider.codename == 'YJ':
-            embed = soup.select('a.preview_thumb')[0].get('href')
+            mobile_href = urlparse.urljoin(document.provider.mobile_url, document.href)
+            mobile_soup = make_request(mobile_href)
+            embed = mobile_soup.select('a.preview_thumb')[0].get('href')
 
         document.embed = embed
         document.save()

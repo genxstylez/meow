@@ -28,6 +28,9 @@ class Document(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
 
+    def __unicode__(self):
+        return self.title
+
     @property
     def url(self):
         return '%s%s' % (self.provider.url, self.href.lstrip('/'))
