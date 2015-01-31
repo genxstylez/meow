@@ -172,6 +172,8 @@ SITE_BRAND = 'development'
 
 SITE_SLOGAN = 'development'
 
+CACHE_MIDDLEWARE_SECONDS = 600
+
 try:
     from local_settings import *
 except ImportError:

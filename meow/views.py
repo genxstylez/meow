@@ -9,7 +9,6 @@ from django.views.decorators.cache import cache_page
 
 from documents.models import Document, Category
 
-
 @cache_page(60 * 15)
 def index(request):
     categories = Category.objects.order_by('-document')[:10]  # Sort by number of document associated

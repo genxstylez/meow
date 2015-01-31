@@ -15,7 +15,7 @@
 
     {% block content %}
         <div class="row" id="isotope-container">
-            {% autopaginate documents 20 %}
+            {% autopaginate documents 50 %}
             {% for doc in documents %}
             <div itemscope itemtype="http://schema.org/WebPage" class="item col-lg-2 col-md-2 col-sm-6 col-xs-12" >
                 <div itemprop="audience" itemscope itemtype="http://schema.org/PeopleAudience" class="thumbnail"> 
