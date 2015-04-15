@@ -13,12 +13,13 @@ from documents.models import Document, Category
 
 def document(request, document_id):
     document = get_object_or_404(Document, id=document_id)
-    soup = make_request(document.href, mobile=True)
+    provider = document.provider
     try:
-        if document.provider.codename == 'RT':
+        if provider.codename == 'RT':
+            soup = make_request(document.href, mobile=True)
             embed = soup.select('div#html5_vid a')[0].get('href')
-        elif document.provider.codename == 'YJ':
-            mobile_href = urlparse.urljoin(document.provider.mobile_url, document.href)
+        elif provider.codename == 'YJ':
+            mobile_href = urlparse.urljoin(provider.mobile_url, document.href.strip(provider.url))
             mobile_soup = make_request(mobile_href)
             embed = mobile_soup.select('a.preview_thumb')[0].get('href')
 
