@@ -160,7 +160,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
     "django.core.context_processors.request",
-    "meow.context_processors.js_debug",
+    "meow.context_processors.all_meow",
 )
 
 
