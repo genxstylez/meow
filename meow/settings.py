@@ -24,6 +24,8 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
+JS_DEBUG = DEBUG
+
 ALLOWED_HOSTS = []
 
 
@@ -135,7 +137,7 @@ CELERYBEAT_SCHEDULE = {
 """
 CELERY_TIMEZONE = 'UTC'
 
-#CELERY_IddMPORTS=("meow.tasks",)
+# CELERY_IddMPORTS=("meow.tasks",)
 
 # Logging
 
@@ -157,7 +159,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.media",
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
-    "django.core.context_processors.request"
+    "django.core.context_processors.request",
+    "meow.context_processors.js_debug",
 )
 
 
@@ -173,6 +176,8 @@ SITE_BRAND = 'development'
 SITE_SLOGAN = 'development'
 
 CACHE_MIDDLEWARE_SECONDS = 600
+
+API_LIMIT_PER_PAGE = 50
 
 try:
     from local_settings import *
