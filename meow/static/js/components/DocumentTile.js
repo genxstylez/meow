@@ -38,8 +38,8 @@ export default React.createClass({
     },
     getInitialState() {
         return {
-            current_index: 0,
-            imgs: [{ url: STATIC_URL + "img/oporn.png"}, ],
+            current_index: 2,
+            imgs: []
         }
     },
     _checkViewport() {
@@ -68,8 +68,7 @@ export default React.createClass({
         })
         var marginBottom = {marginBottom: 8};
         var marginRight = {marginRight: 5};
-        console.log(this.state.imgs);
-
+        var src = _.has(this.state.imgs[this.state.current_index], 'url') ? this.state.imgs[this.state.current_index].url : STATIC_URL + "img/oporn.png";
         return (
             <div itemScope itemType="http://schema.org/WebPage" 
                 className="item col-lg-2 col-md-2 col-sm-6 col-xs-12">
@@ -77,7 +76,7 @@ export default React.createClass({
                     className="thumbnail" onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}> 
                     <meta itemProp="minAge" content="18"/>
                     <Link key={this.props.id} to="document" params={{documentId:this.props.id}}>
-                        <img src={this.state.imgs[this.state.current_index].url} />
+                        <img src={src} />
                     </Link>
                     <div className="caption text-center">
                         <h6>

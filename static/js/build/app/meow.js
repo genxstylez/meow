@@ -409,8 +409,9 @@ exports['default'] = _React2['default'].createClass({
     },
     getInitialState: function getInitialState() {
         return {
-            current_index: 0,
-            imgs: [{ url: STATIC_URL + 'img/oporn.png' }] };
+            current_index: 2,
+            imgs: []
+        };
     },
     _checkViewport: function _checkViewport() {
         if (!this.isMounted()) {
@@ -439,8 +440,7 @@ exports['default'] = _React2['default'].createClass({
         });
         var marginBottom = { marginBottom: 8 };
         var marginRight = { marginRight: 5 };
-        console.log(this.state.imgs);
-
+        var src = _import2['default'].has(this.state.imgs[this.state.current_index], 'url') ? this.state.imgs[this.state.current_index].url : STATIC_URL + 'img/oporn.png';
         return _React2['default'].createElement(
             'div',
             { itemScope: true, itemType: 'http://schema.org/WebPage',
@@ -453,7 +453,7 @@ exports['default'] = _React2['default'].createClass({
                 _React2['default'].createElement(
                     Link,
                     { key: this.props.id, to: 'document', params: { documentId: this.props.id } },
-                    _React2['default'].createElement('img', { src: this.state.imgs[this.state.current_index].url })
+                    _React2['default'].createElement('img', { src: src })
                 ),
                 _React2['default'].createElement(
                     'div',
