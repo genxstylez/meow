@@ -48,4 +48,7 @@ class DocumentResource(ModelResource):
 
         except IndexError:
             pass
+
+        bundle.obj.views += 1
+        bundle.obj.save()
         return embed
