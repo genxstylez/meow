@@ -27,7 +27,7 @@ class DocumentResource(ModelResource):
     embed = fields.CharField(attribute='embed', use_in='detail')
 
     class Meta:
-        queryset = Document.objects.order_by('-last_modified', '-views')
+        queryset = Document.objects.order_by('created_at', '-views')
         resource_name = 'documents'
         list_allowed_methods = ['get', ]
         detailed_allowed_methods = ['get', ]
