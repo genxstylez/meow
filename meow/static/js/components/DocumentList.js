@@ -34,8 +34,8 @@ export default React.createClass({
 
 
     onPageScroll() {
-        var bottomOffset = this.refs.mansonryContainer.getDOMNode().scrollHeight - this.state.scrollTop;
-        if (bottomOffset < 1500 && !this.state.is_loading && this.state.has_next) {
+        var bottomOffset = React.findDOMNode(this.refs.mansonryContainer).scrollHeight - window.innerHeight - this.state.scrollTop;
+        if (bottomOffset < 300 && !this.state.is_loading && this.state.has_next) {
             this.setState({
                 is_loading: true
             });
