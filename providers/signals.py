@@ -48,27 +48,28 @@ def save_document(provider, title, href, images, embed, desc, duration, views, c
                 image.save()
 
     for category in categories:
-        cat = Category.objects.get_or_create(title=category.text.strip())
+        cat = Category.objects.get_or_create(title=category)
         doc.categories.add(cat[0])
 
 
 @one.connect
 def processOne(sender):
-    soup = make_request(sender.url, mobile=True)
-    itemList = soup.select('div.video')
+    soup = make_request(sender.url)
+    itemList = soup.select('a.video-thumb')
     for item in itemList:
-        title = item.select('a')[0].get('title')
-        image = item.select('a img')[0].get('src')
-        href = urlparse.urljoin(sender.url, item.select('a')[0].get('href'))
-        duration = soup.select('div.time span.d')[0].text
+        title = item.get('title')
+        image = item.select('img')[0].get('src')
+        href = urlparse.urljoin(sender.url, item.get('href'))
+        duration = item.select('.video-duration')[0].text
 
         # Here we make second request
         second_soup = make_request(href, mobile=True)
         embed = second_soup.select('div#html5_vid a')[0].get('href')
         desc = ''
 
-        views = second_soup.select('table#ratingsTable .rating-number')[1].text
-        categories = second_soup.select('table#catsAndStars tr')[2].select('a')
+        views = second_soup.select('div.video-details-inside table tr')[1].select('td')[1].text.split()[0]
+        categories = second_soup.select('div.video-details-inside table tr')[0].select('.links')[0].text.split(',')
+
         images = []
         for i in range(1, 17):
             images.append(image.split('.jpg')[0][:-5] + '_0%02dm' % i + '.jpg')
@@ -89,7 +90,7 @@ def processsTwo(sender):
         # Dig deeper
         second_soup = make_request(href)
         title = second_soup.select('#video_text h3')[0].text
-        categories = second_soup.select('#tags a')[1:]
+        categories = filter(None, [anchor.text for anchor in second_soup.select('#tags a')[1:]])
 
         image = item.find('img', class_='lazy').get('data-original')
         images = []
